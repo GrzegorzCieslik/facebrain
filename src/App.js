@@ -15,45 +15,40 @@ var app = new Clarifai.App({
   apiKey: '774d02dd135d442592c0bd17271d14dd'
 });
 
-
+var initialState = {
+  input: '',
+      imageUrl: '',
+      boxes: [],
+}
 
 class App extends Component {
   constructor() {
     super();
-    this.state = {
-      input: '',
-      imageUrl: '',
-      box: {},
-    }
+    this.state = initialState;
   }
   calculateFaceLocation = (response) => {
     
     var image = document.getElementById('inputImage');
     var width = Number(image.width);
     var height = Number(image.height);
-    var clarifaiFace = response.outputs[0].data.regions[0].region_info.bounding_box;
+    
+    const clarifaiFaceArray = response.outputs[0].data.regions;
+    return clarifaiFaceArray.map(region => {
+      const { left_col,top_row, right_col, bottom_row } = region.region_info.bounding_box;
       return {
-        leftCol: clarifaiFace.left_col * width,
-        topRow: clarifaiFace.top_row * height,
-        rightCol: width - (clarifaiFace.right_col * width),
-        bottomRow: height - (clarifaiFace.bottom_row * height)
+        leftCol: left_col * width,
+        topRow: top_row * height,
+        rightCol: width - (right_col * width),
+        bottomRow: height - (bottom_row * height)
       }
-    }
-    // var i;
-    // for (i = 0; i < response.outputs[0].data.regions.length; i++) {
-    // var clarifaiFaces = response.outputs[0].data.regions[i].region_info.bounding_box;
-    //   return {
-    //     leftCol: clarifaiFaces[i].left_col * width,
-    //     topRow: clarifaiFaces[i].top_row * height,
-    //     rightCol: width - (clarifaiFaces[i].right_col * width),
-    //     bottomRow: height - (clarifaiFaces[i].bottom_row * height)
-    //   }
-    // }
-  
+    })
 
-  displayFaceBox = (box) => {
-    console.log(box)
-    this.setState({box: box});
+}
+
+
+  displayFaceBox = (boxes) => {
+    // console.log(boxes)
+    this.setState({boxes: boxes});
   }
 
   onInputChange = (event) => {
@@ -87,7 +82,7 @@ class App extends Component {
         </div>
         <Rank />
         <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit} />
-        <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl} /> 
+        <FaceRecognition boxes={this.state.boxes} imageUrl={this.state.imageUrl} /> 
       </div>
     );
   }

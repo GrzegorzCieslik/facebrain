@@ -9,13 +9,13 @@ import Particles from 'react-particles-js';
 import FaceRecognition from'./components/faceRecognition/FaceRecognition';
 
 
-var particleOptions = { particles: { number: { value: 20, density: { enable: true, value_area: 500 } } } }
+const particleOptions = { particles: { number: { value: 20, density: { enable: true, value_area: 500 } } } }
 
-var app = new Clarifai.App({
+const app = new Clarifai.App({
   apiKey: '774d02dd135d442592c0bd17271d14dd'
 });
 
-var initialState = {
+const initialState = {
   input: '',
       imageUrl: '',
       boxes: [],
@@ -28,9 +28,9 @@ class App extends Component {
   }
   calculateFaceLocation = (response) => {
     
-    var image = document.getElementById('inputImage');
-    var width = Number(image.width);
-    var height = Number(image.height);
+    const image = document.getElementById('inputImage');
+    const width = Number(image.width);
+    const height = Number(image.height);
     
     const clarifaiFaceArray = response.outputs[0].data.regions;
     return clarifaiFaceArray.map(region => {

@@ -1,3 +1,4 @@
+import React from 'react';
 import './FaceRecognition.css';
 import Boxes from './Boxes'
 

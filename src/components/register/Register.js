@@ -26,7 +26,7 @@ class Register extends React.Component {
     if (this.state.signInEmail || this.state.signInPassword || this.state.name === '') {
       return alert("Please fill all required fields")
     }
-    fetch('http://localhost:3000/register', {
+    fetch('https://frozen-gorge-02671.herokuapp.com/register', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
